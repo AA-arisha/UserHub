@@ -1,15 +1,14 @@
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { Toaster, toast } from 'react-hot-toast';
-import { useDispatch } from 'react-redux';
+import { Toaster} from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { getToken } from '../utils/getToken';
-import { LoginUser } from '../api/users/loginUser';
+import { useLoginMutation } from '../hooks/useLoginMutation';
 
 
 function Login() {
-  const dispatch = useDispatch();
+  const loginMutation = useLoginMutation();
   const navigate = useNavigate();
   const token = getToken();
   const formik = useFormik({
@@ -29,19 +28,7 @@ function Login() {
         Password: values.Password.trim(),
       };
 
-      try {
-        const payload = await LoginUser(credentials, dispatch); 
-
-        if (payload.success) {
-          toast.success(payload.message || 'Login successful');
-          navigate('/profile'); // You can delay it if needed
-        } else {
-          toast.error(payload.message || 'Login failed');
-        }
-      } catch (err) {
-        console.error('LOGIN ERROR:', err);
-        toast.error('Unexpected error occurred');
-      }
+      loginMutation.mutate(credentials);
     },
   });
 

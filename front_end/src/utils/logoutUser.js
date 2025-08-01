@@ -1,5 +1,5 @@
-import { logout } from "../slices/authslice";
-export const LogoutUser = (dispatch) => {
-  dispatch(logout())
-  window.location.href = "/"
+import Cookies from 'js-cookie'
+export const logoutUser = () => {
+  Cookies.remove('accessToken');
+  return true;
 };

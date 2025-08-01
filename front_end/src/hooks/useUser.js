@@ -1,13 +1,13 @@
-import { useEffect } from 'react';
-import {  useDispatch, useSelector } from 'react-redux';
-import { fetchUser } from '../api/users/fetchUser';
-export const useUser = () => {
-  const { user} = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-  // Fetch user on mount if not already available
-  useEffect(() => {
-    if (!user) dispatch(fetchUser());
-  }, [ user, dispatch]);
+import { useQuery } from '@tanstack/react-query';
+import { fetchUserFn } from '../api/users/fetchUser';
 
-  return { user };
+export const useUser = () => {
+  const { data: user, isLoading, isError } = useQuery({
+    queryKey: ['user'],
+    queryFn: fetchUserFn,
+    staleTime: 1000 * 60 * 5, // optional: cache for 5 minutes
+    retry: false,             // optional: don’t retry on failure
+  });
+
+  return { user, isLoading, isError };
 };

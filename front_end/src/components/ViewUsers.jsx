@@ -1,13 +1,14 @@
-import { useDispatch } from "react-redux";
 import { useUsers } from "../hooks/useUsers";
-import { UpdateStatus } from "../api/users/UpdateStatus";
+import { useUpdateStatus } from "../hooks/useUpdateStatus";
 const UserTable = () => {
-    const users = useUsers();
-    console.log("users: " ,users);
-    const dispatch = useDispatch();
-    const handleStatus =(user)=>{        
-        dispatch(UpdateStatus(user))
-    }
+
+  const { users, isLoading,isError } = useUsers();
+  console.log("users: " ,users);
+  
+  const { mutate: updateStatus} = useUpdateStatus();
+   if (isLoading) return <div>Loading users...</div>;
+   if (isError) return <div>Failed to load users.</div>;
+   if (!users || users.length === 0) return <div>No users found.</div>;
     
   return (
     <div className="mt-10 overflow-x-auto rounded-lg border shadow-sm bg-white">
@@ -45,7 +46,7 @@ const UserTable = () => {
                 </td>
                 <td className="px-6 py-4">
                     <button
-                     onClick={()=> handleStatus(user)}          
+                     onClick={()=> updateStatus(user)}          
                     className={`w-25 
                         ${!user.isActive?`bg-blue-300 hover:bg-blue-400`:`bg-pink-300 hover:bg-pink-400` }  text-white font-semibold p-2 rounded-lg transition`}
                     >{!user.isActive?`Activate`:`Disable`} </button>

@@ -1,11 +1,8 @@
 import api from "../axiosConfig";
-import { setUsers } from "../../slices/authslice";
 
-export const fetchUsers = () => async (dispatch) => {
-  try {
-    const { data } = await api.get('/ViewUsers');
-    dispatch(setUsers(data.users));
-  } catch (error) {
-    console.error("Error fetching users:", error);
-  }
+export const fetchUsersFn = async () => {
+  const { data } = await api.get('/ViewUsers');
+  console.log("fetch users:", data.users);
+  
+  return data.users; // assuming the response shape is { users: [...] }
 };

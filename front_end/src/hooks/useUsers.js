@@ -1,16 +1,13 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
-import { fetchUsers } from "../api/users/fetchUsers"; // path as per your structure
+import { useQuery } from '@tanstack/react-query';
+import { fetchUsersFn } from '../api/users/fetchUsers';
 
 export const useUsers = () => {
-  const { users } = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
+  const { data: users, isLoading, isError } = useQuery({
+    queryKey: ['users'],
+    queryFn: fetchUsersFn,
+    staleTime: 1000 * 60 * 5, // cache for 5 minutes
+    retry: 1,                 // retry once if it fails
+  });
 
-  useEffect(() => {
-    if (!Array.isArray(users) || users.length === 0) {
-      dispatch(fetchUsers()); 
-    }
-  }, [users, dispatch]);
-
-  return users;
+  return { users, isLoading, isError };
 };
