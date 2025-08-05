@@ -12,6 +12,8 @@ import ProtectedRoute from './routes/ProtectedRoute';
 import { Provider } from 'react-redux';
 import { store } from './store';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Dashboard } from './components/dashboard';
+import Users from './components/users';
 
 // ✅ Create a QueryClient instance
 const queryClient = new QueryClient();
@@ -37,6 +39,14 @@ root.render(
                 }
               />
               <Route
+                path="Users"
+                element={
+                  <ProtectedRoute>
+                    <Users />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
                 path="ViewUsers"
                 element={
                   <ProtectedRoute>
@@ -44,7 +54,16 @@ root.render(
                   </ProtectedRoute>
                 }
               />
+              <Route
+                path="Dashboard"
+                element={
+                  <ProtectedRoute>
+                    <Dashboard/>
+                  </ProtectedRoute>
+                }
+              />
             </Route>
+            
           </Routes>
         </BrowserRouter>
       </Provider>

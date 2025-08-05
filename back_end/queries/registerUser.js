@@ -33,6 +33,10 @@ export const findUserByCreator = async (creator)=>{
   const [rows]= await db.execute('SELECT * FROM users WHERE creator = ?',[creator]);
   return rows;
 }
+export const findAllUsers = async () => {
+  const [rows] = await db.execute('SELECT * FROM users WHERE roles != "Admin"');
+  return rows;
+}
 
 export const statusUpdate = async (req, res)=>{
   const {Email , isActive} = req.body.createdUser;

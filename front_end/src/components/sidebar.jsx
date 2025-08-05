@@ -1,8 +1,10 @@
 import { useUser } from "../hooks/useUser"
 import { Link } from "react-router-dom";
+import { useLogoutUser } from "../hooks/useLogoutUser";
 export const Sidebar = () =>{
     const {user} = useUser();
     console.log(user);
+    const logoutMutation = useLogoutUser();
     
     return (
         <aside class="h-screen w-64 bg-gray-800 text-white fixed top-0 left-0 shadow-lg">
@@ -13,21 +15,16 @@ export const Sidebar = () =>{
                 <Link to="/dashboard" className="flex items-center p-2 rounded hover:bg-gray-700">
                     <span className="ml-2">Dashboard</span>
                 </Link>
-                <Link to="/users" className="flex items-center p-2 rounded hover:bg-gray-700">
-                    <span className="ml-2">Users</span>
-                </Link>
-                <Link to="/roles" className="flex items-center p-2 rounded hover:bg-gray-700">
-                    <span className="ml-2">Roles</span>
-                </Link>
-                <Link to="/permissions" className="flex items-center p-2 rounded hover:bg-gray-700">
-                    <span className="ml-2">Permissions</span>
-                </Link>
-                <Link to="/profile" className="flex items-center p-2 rounded hover:bg-gray-700">
-                    <span className="ml-2">Profile</span>
-                </Link>
-                <Link to="/logout" className="flex items-center p-2 rounded hover:bg-gray-700">
-                    <span className="ml-2">Logout</span>
-                </Link>
+                {user.roles !== 'User' && (
+                    <Link to="/Users" className="flex items-center p-2 rounded hover:bg-gray-700">
+                        <span className="ml-2">Users</span>
+                    </Link>)}
+                
+                
+                <button
+                    onClick={()=> logoutMutation.mutate()}
+                    className="w-25 bg-blue-300 hover:bg-blue-400 text-white font-semibold p-2 rounded-lg transition"
+                >Logout</button>
             </nav>
         </aside>
 

@@ -37,11 +37,10 @@ function Login() {
 
   useEffect(() => {
     if (token){
-      navigate('/profile')
+      navigate('/dashboard')
     }
-  }, [token, navigate])
-
-  return (
+  }, [token, navigate]);     
+return (
     <>
       <Toaster position="top-right" reverseOrder={false} />
       <div className="bg-white p-8 rounded-2xl shadow-md w-full max-w-md text-gray-800">
